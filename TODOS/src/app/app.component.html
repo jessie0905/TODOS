@@ -1,0 +1,96 @@
+<nz-layout >
+ <!-- 弹出框区域 -->
+ <nz-modal
+ [(nzVisible)]="visible"
+ [(nzTitle)]="operate"
+ (nzOnCancel)="handleCancel()"
+ (nzOnOk)="handleOk()"
+ [nzOkLoading]="isOkLoading"
+>
+ <!-- <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()"> -->
+  <form >
+    <!-- Title -->
+    <nz-form-item>
+     <nz-form-label [nzSpan]="4" nzRequired  >Title</nz-form-label>
+     <nz-form-control [nzSpan] ="16">
+       <input name="title" nz-input  placeholder="Title" [(ngModel)]="formData.title"/>
+     </nz-form-control>
+    </nz-form-item>
+    <!-- Status -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="4" >Status</nz-form-label>
+      <nz-form-control [nzSpan] ="16">
+       <nz-radio-group  [nzButtonStyle]="'solid'" name="status" [(ngModel)]="formData.status">
+         <label nz-radio-button nzValue= '0' >Action</label>
+         <label nz-radio-button nzValue= '1' >Completed</label>
+       </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- Detail -->
+    <nz-form-item>
+     <nz-form-label [nzSpan]="4" >Detail</nz-form-label>
+      <nz-form-control [nzSpan] ="16">
+        <textarea
+        [(ngModel)]="formData.detail"
+         name="detail"
+         nz-input
+         placeholder="Please mark Detail"
+         [nzAutosize]="{ minRows: 3, maxRows: 6 }"
+      ></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>
+
+  <nz-content>
+    <div class="inner-content">
+      <h3>todos </h3>
+      <!-- 表头部分 -->
+      <div class="link">
+        <input
+        class="toggleAll"
+        type="checkbox"
+        [(ngModel)]="chooseAll"
+        (change) = 'changeAll($event.target.checked)'
+      />
+       <input  placeholder="Search" class="search"
+        [(ngModel)]="keywords"
+        (keyup)="inputSearch($event)"
+        />
+       <b class="add" (click)="addForm()">+</b>
+      </div>
+
+      <ul class="dataWrapper">
+        <!-- 数据展示区 -->
+        <li *ngFor="let item of todos,let i = index">
+          <div class="todo">
+            <input
+             class="single"
+             type="checkbox"
+             [(ngModel)] = "item.status"
+             (change)="change(item.taskId,$event.target.checked)"
+            />
+            <a class="tittle" (click)= "showDetail(item)">{{item.title}}</a>
+            <i nz-icon nzType="close" nzTheme="outline" class="delete" (click)= "delete(item.taskId)"></i>
+          </div>
+        </li>
+      </ul>
+
+      <!-- 表尾操作按钮 -->
+      <div class="operation" >
+        <div class="op"  [ngClass]="{show:allNum>0?true:false}">
+         <span>{{activeNum > 1 ? activeNum + " items " : activeNum + " item "}} left </span>
+         <ul class="opButton">
+            <li (click)="queryAll()" [ngClass]="{selected: 'all'== state}">All</li>
+            <li (click)="queryActive()"[ngClass]="{selected:'active'==state}">Active</li>
+            <li (click)="queryCompleted()"[ngClass]="{selected: 'completed'==state}">Completed</li>
+          </ul>
+          <a class="clear" [ngClass]=
+          "{show:completedState
+          }" (click)="remove()">Clear completed</a>
+        </div>
+      </div>
+    </div>
+  </nz-content>
+  <nz-footer> Design ©2020 Implement By Angular</nz-footer>
+</nz-layout>
