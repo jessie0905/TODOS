@@ -191,10 +191,21 @@
 .clear:hover {
   text-decoration: underline;
 }
+.tip {
+  display: block;
+  color: #f5222d;
+  width: 560px;
+  height: 32px;
+  position: absolute;
+  top: 20px;
+  visibility: hidden;
+}
+.valid {
+  border: 1px solid #f5222d ;
+}
 .show {
   visibility: visible ;
 }
-
 .ant-layout-footer {
   text-align: center;
 }

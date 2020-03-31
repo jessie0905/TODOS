@@ -11,19 +11,11 @@ module.exports = {
         try {
          await client.startTransaction(); //开启事务
          switch(state){
-            //1、获取符合条件的active项目
-            case 'active':
-                data = await client.executeTransaction('select * from tasktable where status = ? and title like ?;',[0,keywords]);
-                break;
-            //2、获取符合条件的completed项目
-            case  'completed':
-                data = await client.executeTransaction('select * from tasktable where  status = ? and title like ?;',[1,keywords]);
-                break;
-            //3、返回符合条件的All项目
+            //1、返回todos
             case 'all':
                 data = await client.executeTransaction('select * from tasktable where title like ?;',[keywords]);
                 break;
-            //4、查询单个taskId
+            //2、查询单个taskId
             default:
                 data = await client.executeTransaction('select * from tasktable where  taskId;',[taskId]);
          }
@@ -90,7 +82,10 @@ module.exports = {
         var todo = ctx.request.body;
         // let operation_sql = `insert into tasktable values (${todo.})`;
         // console.log(operation_sql)
-
+        if(todo.taskId == 0){
+            todo.taskId = Date.now();
+            console.log(todo.taskId);
+        }
 		try {
             await client.startTransaction(); //开启事务
             //如果是编辑，则先删除对应项，再添加。如果是添加操作，删除语法无效。

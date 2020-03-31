@@ -11,9 +11,10 @@
   <form >
     <!-- Title -->
     <nz-form-item>
-     <nz-form-label [nzSpan]="4" nzRequired  >Title</nz-form-label>
-     <nz-form-control [nzSpan] ="16">
-       <input name="title" nz-input  placeholder="Title" [(ngModel)]="formData.title"/>
+     <nz-form-label [nzSpan]="4" nzRequired  nzFor="title">Title</nz-form-label>
+     <nz-form-control [nzSpan] ="16" >
+       <input nz-input name="title" placeholder="Title"[ngClass]="{valid:tip}" [(ngModel)]="formData.title" (focus)="tip = false"/>
+       <span class="tip" [ngClass]="{show:tip}">Please input the title</span>
      </nz-form-control>
     </nz-form-item>
     <!-- Status -->
@@ -62,7 +63,7 @@
 
       <ul class="dataWrapper">
         <!-- 数据展示区 -->
-        <li *ngFor="let item of todos,let i = index">
+        <li *ngFor="let item of todosShow,let i = index">
           <div class="todo">
             <input
              class="single"

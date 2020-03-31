@@ -10,4 +10,25 @@ const client = new Client({
 	}
 });
 
+try {
+	client.startTransaction()//开启事务
+	client.stopTransaction();//关闭事务
+} catch (error) {
+	console.log("数据库连接失败")
+}
+
+var  p = new Promise(function(resolve,reject){
+	if(client.startTransaction()){
+		resolve();
+	}else {
+		reject(error);
+	}
+})
+
+p.then(()=>{
+	client.stopTransaction();
+})
+p.catch((error)=>{
+	runtimeLog.error('[error]',error)
+})
 module.exports = client;
